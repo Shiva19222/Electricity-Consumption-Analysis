@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugging into the Future - Electricity Consumption Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--primary-color);
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-section {
+            padding: 120px 0 80px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .stats-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 50px;
+            color: white;
+        }
+
+        .scenario-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            border: none;
+            margin-bottom: 30px;
+        }
+
+        .scenario-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .scenario-header {
+            padding: 30px;
+            color: white;
+            position: relative;
+        }
+
+        .scenario-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .scenario-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .scenario-body {
+            padding: 30px;
+        }
+
+        .scenario-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .insight-tag {
+            display: inline-block;
+            background: var(--light-color);
+            color: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 3px;
+            font-weight: 600;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .btn-tableau {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .btn-tableau:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+            color: white;
+        }
+
+        .tech-badge {
+            background: var(--dark-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 5px;
+            display: inline-block;
+        }
+
+        .footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .visualization-preview {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .preview-item {
+            background: var(--light-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .preview-item:hover {
+            transform: scale(1.05);
+        }
+
+        .preview-icon {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .stats-card {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#home">
+                <i class="fas fa-bolt me-2"></i>
+                Electricity Consumption Analysis
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#scenarios">Scenarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#visualizations">Visualizations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/story">Story</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Plugging into the Future</h1>
+            <p class="hero-subtitle">An Exploration of Electricity Consumption Patterns Using Tableau</p>
+            
+            <!-- Stats Cards -->
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="stats-number">16,599</div>
+                        <div class="text-white">Data Records</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="stats-number">36</div>
+                        <div class="text-white">Indian States</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="stats-number">12</div>
+                        <div class="text-white">Visualizations</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="stats-number">5</div>
+                        <div class="text-white">Story Scenes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scenarios Section -->
+    <section id="scenarios" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Analysis Scenarios</h2>
+            
+            <div class="row">
+                <!-- Scenario 1 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="scenario-card">
+                        <div class="scenario-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <div class="scenario-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h3 class="scenario-title">Time-of-Day Usage Patterns</h3>
+                        </div>
+                        <div class="scenario-body">
+                            <p class="scenario-description">
+                                Analyze electricity consumption trends throughout the day across different regions and sectors. 
+                                Identify peak usage times and low-demand periods for better grid management.
+                            </p>
+                            <div class="mb-3">
+                                <span class="insight-tag">Peak Usage Identification</span>
+                                <span class="insight-tag">Off-Peak Opportunities</span>
+                                <span class="insight-tag">Grid Optimization</span>
+                            </div>
+                            <a href="/analysis/time-patterns" class="btn-tableau">
+                                <i class="fas fa-clock me-2"></i>Time Patterns
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 2 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="scenario-card">
+                        <div class="scenario-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <div class="scenario-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <h3 class="scenario-title">Seasonal Variations</h3>
+                        </div>
+                        <div class="scenario-body">
+                            <p class="scenario-description">
+                                Examine seasonal fluctuations in electricity consumption patterns. 
+                                Plan for seasonal peaks and optimize renewable energy integration.
+                            </p>
+                            <div class="mb-3">
+                                <span class="insight-tag">Seasonal Peaks</span>
+                                <span class="insight-tag">Renewable Integration</span>
+                                <span class="insight-tag">Supply Planning</span>
+                            </div>
+                            <a href="/analysis/seasonal-variations" class="btn-tableau">
+                                <i class="fas fa-thermometer-half me-2"></i>Seasonal Variations
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 3 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="scenario-card">
+                        <div class="scenario-header" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <div class="scenario-icon">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <h3 class="scenario-title">Sector-Specific Insights</h3>
+                        </div>
+                        <div class="scenario-body">
+                            <p class="scenario-description">
+                                Explore electricity consumption by different sectors such as residential, commercial, and industrial. 
+                                Tailor conservation programs for specific sectors.
+                            </p>
+                            <div class="mb-3">
+                                <span class="insight-tag">Sector Comparisons</span>
+                                <span class="insight-tag">Conservation Programs</span>
+                                <span class="insight-tag">Efficiency Initiatives</span>
+                            </div>
+                            <a href="/analysis/sector-specific" class="btn-tableau">
+                                <i class="fas fa-industry me-2"></i>Sector Analysis
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visualizations Section -->
+    <section id="visualizations" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Tableau Visualizations</h2>
+            
+            <div class="visualization-preview">
+                <h4 class="mb-4">Interactive Visualizations Gallery</h4>
+                <div class="preview-grid">
+                    <div class="preview-item">
+                        <div class="preview-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h5>State Consumption</h5>
+                        <p>2019 & 2020 comparison</p>
+                    </div>
+                    <div class="preview-item">
+                        <div class="preview-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h5>Monthly Trends</h5>
+                        <p>Time series analysis</p>
+                    </div>
+                    <div class="preview-item">
+                        <div class="preview-icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <h5>Regional Analysis</h5>
+                        <p>Geographic patterns</p>
+                    </div>
+                    <div class="preview-item">
+                        <div class="preview-icon">
+                            <i class="fas fa-virus"></i>
+                        </div>
+                        <h5>Lockdown Impact</h5>
+                        <p>COVID-19 analysis</p>
+                    </div>
+                    <div class="preview-item">
+                        <div class="preview-icon">
+                            <i class="fas fa-snowflake"></i>
+                        </div>
+                        <h5>Seasonal Patterns</h5>
+                        <p>Seasonal variations</p>
+                    </div>
+                    <div class="preview-item">
+                        <div class="preview-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h5>Top/Bottom States</h5>
+                        <p>Ranking analysis</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="/visualizations" class="btn-tableau">
+                    <i class="fas fa-th me-2"></i>View All Visualizations
+                </a>
+                <a href="/dashboard" class="btn-tableau">
+                    <i class="fas fa-tachometer-alt me-2"></i>Interactive Dashboard
+                </a>
+                <a href="/story" class="btn-tableau">
+                    <i class="fas fa-book me-2"></i>Data Story
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Project Features</h2>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h4>Database Integration</h4>
+                        <p>MySQL and SQL Server support with optimized schemas for Tableau performance</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h4>12 Unique Visualizations</h4>
+                        <p>Comprehensive analysis covering time series, geographical, and comparative views</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h4>Responsive Design</h4>
+                        <p>Mobile-friendly interface with seamless cross-device experience</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-virus"></i>
+                        </div>
+                        <h4>COVID-19 Analysis</h4>
+                        <p>Lockdown impact analysis with before/after comparisons</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h4>Tableau Public Integration</h4>
+                        <p>Published visualizations accessible from anywhere</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title">Technologies Used</h2>
+            <div class="text-center">
+                <span class="tech-badge">Tableau</span>
+                <span class="tech-badge">MySQL</span>
+                <span class="tech-badge">SQL Server</span>
+                <span class="tech-badge">Flask</span>
+                <span class="tech-badge">HTML/CSS</span>
+                <span class="tech-badge">JavaScript</span>
+                <span class="tech-badge">Bootstrap</span>
+                <span class="tech-badge">Python</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2024 Electricity Consumption Analysis</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>
+                        <i class="fas fa-envelope me-2"></i>contact@energyanalysis.com
+                        <i class="fab fa-linkedin ms-3 me-2"></i>linkedin.com/in/energyanalysis
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Dynamic stats animation
+        function animateValue(element, start, end, duration) {
+            const range = end - start;
+            const startTime = performance.now();
+            
+            function updateValue(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const value = Math.floor(progress * range + start);
+                element.textContent = value.toLocaleString();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateValue);
+                }
+            }
+            
+            requestAnimationFrame(updateValue);
+        }
+
+        // Animate stats when page loads
+        window.addEventListener('load', () => {
+            const statsNumbers = document.querySelectorAll('.stats-number');
+            statsNumbers.forEach(element => {
+                const finalValue = parseInt(element.textContent.replace(/,/g, ''));
+                animateValue(element, 0, finalValue, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

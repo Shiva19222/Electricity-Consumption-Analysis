@@ -1,0 +1,633 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Consumption Analysis Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .chart-container {
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .chart-title {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Electricity Consumption Analysis Dashboard</h1>
+            <p>Professional Data Analytics - 2019-2020</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">16,599</div>
+                <div class="stat-label">Total Records</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1,709,727.90</div>
+                <div class="stat-label">Total Usage (MWh)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">103.00</div>
+                <div class="stat-label">Average Usage (MWh)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">522.10</div>
+                <div class="stat-label">Peak Usage (MWh)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">33</div>
+                <div class="stat-label">Unique States</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Unique Regions</div>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart-title">📊 Top 10 States by Consumption</div>
+            
+        <div style="background: white; padding: 20px; border-radius: 10px;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr><th style="background: #f2f2f2; padding: 10px; text-align: left;">Rank</th><th style="background: #f2f2f2; padding: 10px; text-align: left;">State</th><th style="background: #f2f2f2; padding: 10px; text-align: right;">Usage (MWh)</th></tr>
+        
+                <tr>
+                    <td style="padding: 10px;">1</td>
+                    <td style="padding: 10px;">Maharashtra</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">217,079.80</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">2</td>
+                    <td style="padding: 10px;">Gujarat</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">162,488.90</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">3</td>
+                    <td style="padding: 10px;">UP</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">157,960.30</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">4</td>
+                    <td style="padding: 10px;">Tamil Nadu</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">151,271.50</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">5</td>
+                    <td style="padding: 10px;">Rajasthan</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">109,877.00</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">6</td>
+                    <td style="padding: 10px;">MP</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">104,766.40</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">7</td>
+                    <td style="padding: 10px;">Karnataka</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">102,665.70</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">8</td>
+                    <td style="padding: 10px;">Telangana</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">94,065.30</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">9</td>
+                    <td style="padding: 10px;">Andhra Pradesh</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">88,604.40</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">10</td>
+                    <td style="padding: 10px;">Punjab</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">70,996.20</td>
+                </tr>
+            </table></div>
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart-title">📈 Monthly Consumption Trends</div>
+            
+        <div style="background: white; padding: 20px; border-radius: 10px;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr><th style="background: #f2f2f2; padding: 10px; text-align: left;">Month</th>
+        <th style="background: #f2f2f2; padding: 10px; text-align: right;">2019</th><th style="background: #f2f2f2; padding: 10px; text-align: right;">2020</th></tr><tr><td style="padding: 10px; font-weight: bold;">January</td><td style="padding: 10px; text-align: right;">101,305.60</td><td style="padding: 10px; text-align: right;">85,319.20</td></tr><tr><td style="padding: 10px; font-weight: bold;">February</td><td style="padding: 10px; text-align: right;">87,276.40</td><td style="padding: 10px; text-align: right;">76,385.40</td></tr><tr><td style="padding: 10px; font-weight: bold;">March</td><td style="padding: 10px; text-align: right;">99,833.60</td><td style="padding: 10px; text-align: right;">77,012.10</td></tr><tr><td style="padding: 10px; font-weight: bold;">April</td><td style="padding: 10px; text-align: right;">103,150.80</td><td style="padding: 10px; text-align: right;">78,242.30</td></tr><tr><td style="padding: 10px; font-weight: bold;">May</td><td style="padding: 10px; text-align: right;">101,728.00</td><td style="padding: 10px; text-align: right;">53,559.30</td></tr><tr><td style="padding: 10px; font-weight: bold;">June</td><td style="padding: 10px; text-align: right;">96,775.60</td><td style="padding: 10px; text-align: right;">15,661.20</td></tr><tr><td style="padding: 10px; font-weight: bold;">July</td><td style="padding: 10px; text-align: right;">118,600.30</td><td style="padding: 10px; text-align: right;">17,130.70</td></tr><tr><td style="padding: 10px; font-weight: bold;">August</td><td style="padding: 10px; text-align: right;">105,273.90</td><td style="padding: 10px; text-align: right;">18,134.40</td></tr><tr><td style="padding: 10px; font-weight: bold;">September</td><td style="padding: 10px; text-align: right;">102,346.70</td><td style="padding: 10px; text-align: right;">17,178.40</td></tr><tr><td style="padding: 10px; font-weight: bold;">October</td><td style="padding: 10px; text-align: right;">102,442.60</td><td style="padding: 10px; text-align: right;">18,536.60</td></tr><tr><td style="padding: 10px; font-weight: bold;">November</td><td style="padding: 10px; text-align: right;">93,288.90</td><td style="padding: 10px; text-align: right;">18,082.00</td></tr><tr><td style="padding: 10px; font-weight: bold;">December</td><td style="padding: 10px; text-align: right;">104,182.90</td><td style="padding: 10px; text-align: right;">18,281.00</td></tr></table></div>
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart-title">🌍 Regional Consumption Distribution</div>
+            
+        <div style="background: white; padding: 20px; border-radius: 10px;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr><th style="background: #f2f2f2; padding: 10px; text-align: left;">Region</th><th style="background: #f2f2f2; padding: 10px; text-align: right;">Usage (MWh)</th><th style="background: #f2f2f2; padding: 10px; text-align: right;">Percentage</th></tr>
+        
+                <tr>
+                    <td style="padding: 10px;">WR</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">540,369.80</td>
+                    <td style="padding: 10px; text-align: right;">31.6%</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">NR</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">506,254.60</td>
+                    <td style="padding: 10px; text-align: right;">29.6%</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">SR</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">476,678.60</td>
+                    <td style="padding: 10px; text-align: right;">27.9%</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">ER</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">164,714.50</td>
+                    <td style="padding: 10px; text-align: right;">9.6%</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">NER</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">21,710.40</td>
+                    <td style="padding: 10px; text-align: right;">1.3%</td>
+                </tr>
+            </table></div>
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart-title">🔒 COVID-19 Lockdown Impact</div>
+            
+        <div style="background: white; padding: 20px; border-radius: 10px;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr><th style="background: #f2f2f2; padding: 10px; text-align: left;">Year</th><th style="background: #f2f2f2; padding: 10px; text-align: left;">Period</th><th style="background: #f2f2f2; padding: 10px; text-align: right;">Average Usage (MWh)</th><th style="background: #f2f2f2; padding: 10px; text-align: right;">Impact</th></tr>
+        
+                <tr>
+                    <td style="padding: 10px;">2019</td>
+                    <td style="padding: 10px;">Normal Period</td>
+                    <td style="padding: 10px; text-align: right;">102.66</td>
+                    <td style="padding: 10px; text-align: right;">-100.0%</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;"></td>
+                    <td style="padding: 10px;">Lockdown Period</td>
+                    <td style="padding: 10px; text-align: right;">0.00</td>
+                    <td style="padding: 10px; text-align: right; color: red;">Impact</td>
+                </tr>
+                
+                <tr>
+                    <td style="padding: 10px;">2020</td>
+                    <td style="padding: 10px;">Normal Period</td>
+                    <td style="padding: 10px; text-align: right;">106.38</td>
+                    <td style="padding: 10px; text-align: right;">-6.1%</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;"></td>
+                    <td style="padding: 10px;">Lockdown Period</td>
+                    <td style="padding: 10px; text-align: right;">99.90</td>
+                    <td style="padding: 10px; text-align: right; color: red;">Impact</td>
+                </tr>
+                </table></div>
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart-title">🌸 Seasonal Consumption Patterns</div>
+            
+        <div style="background: white; padding: 20px; border-radius: 10px;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr><th style="background: #f2f2f2; padding: 10px; text-align: left;">Season</th><th style="background: #f2f2f2; padding: 10px; text-align: right;">Total Usage (MWh)</th><th style="background: #f2f2f2; padding: 10px; text-align: right;">Percentage</th></tr>
+        
+                <tr>
+                    <td style="padding: 10px;">Summer</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">513,526.10</td>
+                    <td style="padding: 10px; text-align: right;">30.0%</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">Monsoon</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">491,101.20</td>
+                    <td style="padding: 10px; text-align: right;">28.7%</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">Winter</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">472,750.50</td>
+                    <td style="padding: 10px; text-align: right;">27.7%</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 10px;">Post-Monsoon</td>
+                    <td style="padding: 10px; text-align: right; font-weight: bold;">232,350.10</td>
+                    <td style="padding: 10px; text-align: right;">13.6%</td>
+                </tr>
+            </table></div>
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart-title">📋 Data Summary Table</div>
+            
+        <div style="background: white; padding: 20px; border-radius: 10px; max-height: 400px; overflow-y: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                <tr>
+                    <th style="background: #f2f2f2; padding: 8px; text-align: left; position: sticky; top: 0;">State</th>
+                    <th style="background: #f2f2f2; padding: 8px; text-align: left; position: sticky; top: 0;">Region</th>
+                    <th style="background: #f2f2f2; padding: 8px; text-align: left; position: sticky; top: 0;">Year</th>
+                    <th style="background: #f2f2f2; padding: 8px; text-align: right; position: sticky; top: 0;">Total</th>
+                    <th style="background: #f2f2f2; padding: 8px; text-align: right; position: sticky; top: 0;">Average</th>
+                    <th style="background: #f2f2f2; padding: 8px; text-align: right; position: sticky; top: 0;">Min</th>
+                    <th style="background: #f2f2f2; padding: 8px; text-align: right; position: sticky; top: 0;">Max</th>
+                    <th style="background: #f2f2f2; padding: 8px; text-align: right; position: sticky; top: 0;">Count</th>
+                </tr>
+        
+                <tr>
+                    <td style="padding: 8px;">    Andhra Pradesh
+Name: 0, dtype: str</td>
+                    <td style="padding: 8px;">    SR
+Name: 0, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2019
+Name: 0, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">63,097.00</td>
+                    <td style="padding: 8px; text-align: right;">175.76</td>
+                    <td style="padding: 8px; text-align: right;">142.20</td>
+                    <td style="padding: 8px; text-align: right;">205.10</td>
+                    <td style="padding: 8px; text-align: right;">359</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Andhra Pradesh
+Name: 1, dtype: str</td>
+                    <td style="padding: 8px;">    SR
+Name: 1, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2020
+Name: 1, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">25,507.40</td>
+                    <td style="padding: 8px; text-align: right;">177.13</td>
+                    <td style="padding: 8px; text-align: right;">130.60</td>
+                    <td style="padding: 8px; text-align: right;">205.00</td>
+                    <td style="padding: 8px; text-align: right;">144</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Arunachal Pradesh
+Name: 2, dtype: str</td>
+                    <td style="padding: 8px;">    NER
+Name: 2, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2019
+Name: 2, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">754.00</td>
+                    <td style="padding: 8px; text-align: right;">2.10</td>
+                    <td style="padding: 8px; text-align: right;">1.10</td>
+                    <td style="padding: 8px; text-align: right;">2.60</td>
+                    <td style="padding: 8px; text-align: right;">359</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Arunachal Pradesh
+Name: 3, dtype: str</td>
+                    <td style="padding: 8px;">    NER
+Name: 3, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2020
+Name: 3, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">306.90</td>
+                    <td style="padding: 8px; text-align: right;">2.13</td>
+                    <td style="padding: 8px; text-align: right;">1.30</td>
+                    <td style="padding: 8px; text-align: right;">2.70</td>
+                    <td style="padding: 8px; text-align: right;">144</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Assam
+Name: 4, dtype: str</td>
+                    <td style="padding: 8px;">    NER
+Name: 4, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2019
+Name: 4, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">8,979.40</td>
+                    <td style="padding: 8px; text-align: right;">25.01</td>
+                    <td style="padding: 8px; text-align: right;">14.30</td>
+                    <td style="padding: 8px; text-align: right;">38.00</td>
+                    <td style="padding: 8px; text-align: right;">359</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Assam
+Name: 5, dtype: str</td>
+                    <td style="padding: 8px;">    NER
+Name: 5, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2020
+Name: 5, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">3,575.50</td>
+                    <td style="padding: 8px; text-align: right;">24.83</td>
+                    <td style="padding: 8px; text-align: right;">12.20</td>
+                    <td style="padding: 8px; text-align: right;">36.10</td>
+                    <td style="padding: 8px; text-align: right;">144</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Bihar
+Name: 6, dtype: str</td>
+                    <td style="padding: 8px;">    ER
+Name: 6, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2019
+Name: 6, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">30,007.90</td>
+                    <td style="padding: 8px; text-align: right;">83.59</td>
+                    <td style="padding: 8px; text-align: right;">43.50</td>
+                    <td style="padding: 8px; text-align: right;">117.90</td>
+                    <td style="padding: 8px; text-align: right;">359</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Bihar
+Name: 7, dtype: str</td>
+                    <td style="padding: 8px;">    ER
+Name: 7, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2020
+Name: 7, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">11,821.30</td>
+                    <td style="padding: 8px; text-align: right;">82.09</td>
+                    <td style="padding: 8px; text-align: right;">52.50</td>
+                    <td style="padding: 8px; text-align: right;">121.40</td>
+                    <td style="padding: 8px; text-align: right;">144</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Chandigarh
+Name: 8, dtype: str</td>
+                    <td style="padding: 8px;">    NR
+Name: 8, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2019
+Name: 8, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">1,472.40</td>
+                    <td style="padding: 8px; text-align: right;">4.10</td>
+                    <td style="padding: 8px; text-align: right;">2.20</td>
+                    <td style="padding: 8px; text-align: right;">6.80</td>
+                    <td style="padding: 8px; text-align: right;">359</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Chandigarh
+Name: 9, dtype: str</td>
+                    <td style="padding: 8px;">    NR
+Name: 9, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2020
+Name: 9, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">610.80</td>
+                    <td style="padding: 8px; text-align: right;">4.24</td>
+                    <td style="padding: 8px; text-align: right;">2.20</td>
+                    <td style="padding: 8px; text-align: right;">7.40</td>
+                    <td style="padding: 8px; text-align: right;">144</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Chhattisgarh
+Name: 10, dtype: str</td>
+                    <td style="padding: 8px;">    WR
+Name: 10, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2019
+Name: 10, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">30,179.90</td>
+                    <td style="padding: 8px; text-align: right;">84.07</td>
+                    <td style="padding: 8px; text-align: right;">37.20</td>
+                    <td style="padding: 8px; text-align: right;">111.60</td>
+                    <td style="padding: 8px; text-align: right;">359</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Chhattisgarh
+Name: 11, dtype: str</td>
+                    <td style="padding: 8px;">    WR
+Name: 11, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2020
+Name: 11, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">12,010.30</td>
+                    <td style="padding: 8px; text-align: right;">83.40</td>
+                    <td style="padding: 8px; text-align: right;">65.60</td>
+                    <td style="padding: 8px; text-align: right;">103.00</td>
+                    <td style="padding: 8px; text-align: right;">144</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    DNH
+Name: 12, dtype: str</td>
+                    <td style="padding: 8px;">    WR
+Name: 12, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2019
+Name: 12, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">5,845.40</td>
+                    <td style="padding: 8px; text-align: right;">16.28</td>
+                    <td style="padding: 8px; text-align: right;">1.30</td>
+                    <td style="padding: 8px; text-align: right;">19.40</td>
+                    <td style="padding: 8px; text-align: right;">359</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    DNH
+Name: 13, dtype: str</td>
+                    <td style="padding: 8px;">    WR
+Name: 13, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2020
+Name: 13, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">2,419.20</td>
+                    <td style="padding: 8px; text-align: right;">16.80</td>
+                    <td style="padding: 8px; text-align: right;">1.80</td>
+                    <td style="padding: 8px; text-align: right;">19.50</td>
+                    <td style="padding: 8px; text-align: right;">144</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Delhi
+Name: 14, dtype: str</td>
+                    <td style="padding: 8px;">    NR
+Name: 14, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2019
+Name: 14, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">29,458.30</td>
+                    <td style="padding: 8px; text-align: right;">82.06</td>
+                    <td style="padding: 8px; text-align: right;">41.80</td>
+                    <td style="padding: 8px; text-align: right;">139.10</td>
+                    <td style="padding: 8px; text-align: right;">359</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Delhi
+Name: 15, dtype: str</td>
+                    <td style="padding: 8px;">    NR
+Name: 15, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2020
+Name: 15, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">12,482.20</td>
+                    <td style="padding: 8px; text-align: right;">86.68</td>
+                    <td style="padding: 8px; text-align: right;">44.30</td>
+                    <td style="padding: 8px; text-align: right;">147.10</td>
+                    <td style="padding: 8px; text-align: right;">144</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Goa
+Name: 16, dtype: str</td>
+                    <td style="padding: 8px;">    WR
+Name: 16, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2019
+Name: 16, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">4,006.50</td>
+                    <td style="padding: 8px; text-align: right;">11.16</td>
+                    <td style="padding: 8px; text-align: right;">6.20</td>
+                    <td style="padding: 8px; text-align: right;">14.00</td>
+                    <td style="padding: 8px; text-align: right;">359</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Goa
+Name: 17, dtype: str</td>
+                    <td style="padding: 8px;">    WR
+Name: 17, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2020
+Name: 17, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">1,573.40</td>
+                    <td style="padding: 8px; text-align: right;">10.93</td>
+                    <td style="padding: 8px; text-align: right;">6.60</td>
+                    <td style="padding: 8px; text-align: right;">13.70</td>
+                    <td style="padding: 8px; text-align: right;">144</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Gujarat
+Name: 18, dtype: str</td>
+                    <td style="padding: 8px;">    WR
+Name: 18, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2019
+Name: 18, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">115,357.40</td>
+                    <td style="padding: 8px; text-align: right;">321.33</td>
+                    <td style="padding: 8px; text-align: right;">192.30</td>
+                    <td style="padding: 8px; text-align: right;">398.00</td>
+                    <td style="padding: 8px; text-align: right;">359</td>
+                </tr>
+            
+                <tr>
+                    <td style="padding: 8px;">    Gujarat
+Name: 19, dtype: str</td>
+                    <td style="padding: 8px;">    WR
+Name: 19, dtype: str</td>
+                    <td style="padding: 8px; text-align: center;">    2020
+Name: 19, dtype: object</td>
+                    <td style="padding: 8px; text-align: right;">47,131.50</td>
+                    <td style="padding: 8px; text-align: right;">327.30</td>
+                    <td style="padding: 8px; text-align: right;">231.40</td>
+                    <td style="padding: 8px; text-align: right;">400.80</td>
+                    <td style="padding: 8px; text-align: right;">144</td>
+                </tr>
+            </table></div>
+        </div>
+        
+        <div class="footer">
+            <p>🎊 Professional Electricity Consumption Analysis Dashboard</p>
+            <p>Generated: 2026-02-17 17:31:42</p>
+            <p>Data Source: Tableau_Ready_Data.csv (16,599 records)</p>
+        </div>
+    </div>
+    
+    <script>
+        // Simple chart interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Dashboard loaded successfully');
+        });
+    </script>
+</body>
+</html>
+        

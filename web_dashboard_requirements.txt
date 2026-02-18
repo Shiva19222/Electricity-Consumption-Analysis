@@ -1,0 +1,27 @@
+# Web Dashboard Requirements
+
+## Install Required Packages
+pip install dash pandas plotly dash-bootstrap-components
+
+## Run the Dashboard
+python web_dashboard.py
+
+## Access the Dashboard
+http://localhost:8050
+
+## Features Available
+- State Consumption Analysis
+- Monthly Trends
+- Regional Analysis
+- COVID-19 Lockdown Impact
+- Seasonal Patterns
+- Interactive Filters (Year, Region, Lockdown)
+- Mobile Responsive Design
+- Professional Visualizations
+
+## Benefits
+- No Tableau Desktop required
+- Runs in any web browser
+- Interactive and professional
+- Mobile friendly
+- Easy to share and deploy

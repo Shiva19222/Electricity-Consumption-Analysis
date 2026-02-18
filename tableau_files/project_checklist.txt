@@ -1,0 +1,39 @@
+
+# Tableau Electricity Analysis - Project Checklist
+
+## Database Setup
+- [ ] Database schema executed
+- [ ] Data imported successfully
+- [ ] Views and stored procedures created
+- [ ] Performance optimization applied
+
+## Tableau Development
+- [ ] Data source connected
+- [ ] 12 visualizations created
+- [ ] Interactive dashboard built
+- [ ] 5-scene story created
+- [ ] Published to Tableau Public
+
+## Web Integration
+- [ ] Flask application running
+- [ ] HTML templates created
+- [ ] Tableau URLs updated
+- [ ] Responsive design tested
+
+## Documentation
+- [ ] Project documentation completed
+- [ ] User guide created
+- [ ] Technical documentation prepared
+- [ ] Demonstration video recorded
+
+## Testing
+- [ ] Dashboard loading time < 3 seconds
+- [ ] Mobile responsiveness verified
+- [ ] All filters working correctly
+- [ ] Navigation functioning properly
+
+## Deployment
+- [ ] Local testing completed
+- [ ] Production deployment ready
+- [ ] SSL certificate configured
+- [ ] Custom domain set up

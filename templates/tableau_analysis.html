@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Consumption Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--primary-color);
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-section {
+            padding: 60px 0 40px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .analysis-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px auto;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            border-left: 4px solid var(--secondary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-tableau {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .btn-tableau:hover {
+            background: linear-gradient(135deg, #2980b9, #21618c);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-bolt text-primary me-2"></i>
+                Electricity Analysis
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/visualizations"><i class="fas fa-chart-line me-1"></i>Visualizations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/story"><i class="fas fa-book me-1"></i>Story</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/analysis"><i class="fas fa-analytics me-1"></i>Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/documentation"><i class="fas fa-file-alt me-1"></i>Documentation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">
+                <i class="fas fa-analytics me-3"></i>
+                Data Analysis
+            </h1>
+            <p class="hero-subtitle">
+                In-depth analysis of electricity consumption patterns and key insights
+            </p>
+        </div>
+    </section>
+
+    <!-- Analysis Container -->
+    <div class="container">
+        <div class="analysis-container">
+            <!-- Project Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">16,599</div>
+                    <div class="stat-label">Data Records</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">35</div>
+                    <div class="stat-label">Indian States</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Regions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24</div>
+                    <div class="stat-label">Months</div>
+                </div>
+            </div>
+
+            <!-- Key Insights -->
+            <h3 class="mb-4">
+                <i class="fas fa-lightbulb me-2"></i>
+                Key Insights
+            </h3>
+
+            <div class="insight-card">
+                <h5>
+                    <i class="fas fa-chart-line me-2"></i>
+                    Seasonal Consumption Patterns
+                </h5>
+                <p>
+                    Analysis reveals clear seasonal patterns with peak consumption during summer months (April-July) 
+                    due to increased air conditioning usage, and lower consumption during winter months. 
+                    The monsoon season shows moderate consumption patterns.
+                </p>
+            </div>
+
+            <div class="insight-card">
+                <h5>
+                    <i class="fas fa-map-marked-alt me-2"></i>
+                    Regional Variations
+                </h5>
+                <p>
+                    Significant regional variations exist, with northern and western states showing higher consumption 
+                    patterns compared to eastern and northeastern regions. This correlates with industrial development 
+                    and population density patterns.
+                </p>
+            </div>
+
+            <div class="insight-card">
+                <h5>
+                    <i class="fas fa-virus me-2"></i>
+                    COVID-19 Impact Analysis
+                </h5>
+                <p>
+                    The COVID-19 lockdown period (March-May 2020) showed a significant drop in electricity consumption, 
+                    particularly in commercial and industrial sectors. Residential consumption saw a slight increase 
+                    due to work-from-home arrangements.
+                </p>
+            </div>
+
+            <div class="insight-card">
+                <h5>
+                    <i class="fas fa-city me-2"></i>
+                    Metro vs Non-Metro Consumption
+                </h5>
+                <p>
+                    Metropolitan cities consistently show higher per-capita electricity consumption compared to 
+                    non-metro areas. This is attributed to higher living standards, greater appliance usage, 
+                    and commercial activity concentration.
+                </p>
+            </div>
+
+            <div class="insight-card">
+                <h5>
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    Monthly Trends
+                </h5>
+                <p>
+                    Monthly analysis shows consistent patterns with peak consumption in May-June and lower consumption 
+                    in November-December. Weekend consumption patterns differ from weekday patterns, with 
+                    reduced industrial activity on weekends.
+                </p>
+            </div>
+
+            <!-- Analysis Methods -->
+            <h3 class="mb-4 mt-5">
+                <i class="fas fa-cogs me-2"></i>
+                Analysis Methods
+            </h3>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="insight-card">
+                        <h6>
+                            <i class="fas fa-chart-bar me-2"></i>
+                            Statistical Analysis
+                        </h6>
+                        <p class="mb-0">
+                            Applied descriptive statistics, correlation analysis, and trend identification 
+                            to understand consumption patterns and relationships between variables.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="insight-card">
+                        <h6>
+                            <i class="fas fa-chart-pie me-2"></i>
+                            Comparative Analysis
+                        </h6>
+                        <p class="mb-0">
+                            Compared consumption across states, regions, time periods, and sectors 
+                            to identify patterns and anomalies in electricity usage.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="insight-card">
+                        <h6>
+                            <i class="fas fa-chart-line me-2"></i>
+                            Time Series Analysis
+                        </h6>
+                        <p class="mb-0">
+                            Analyzed temporal patterns, seasonal variations, and trend components 
+                            to understand consumption dynamics over the 24-month period.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="insight-card">
+                        <h6>
+                            <i class="fas fa-map me-2"></i>
+                            Geographic Analysis
+                        </h6>
+                        <p class="mb-0">
+                            Mapped consumption patterns geographically to identify regional clusters, 
+                            hotspots, and spatial relationships in electricity usage.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="text-center mt-5">
+                <h4>
+                    <i class="fas fa-compass me-2"></i>
+                    Explore Further
+                </h4>
+                <p class="mb-4">
+                    Dive deeper into the visualizations and interactive dashboard to explore the data yourself.
+                </p>
+                <a href="/dashboard" class="btn-tableau">
+                    <i class="fas fa-tachometer-alt me-2"></i>
+                    View Dashboard
+                </a>
+                <a href="/story" class="btn-tableau">
+                    <i class="fas fa-book me-2"></i>
+                    View Story
+                </a>
+                <a href="/visualizations" class="btn-tableau">
+                    <i class="fas fa-chart-line me-2"></i>
+                    View Visualizations
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-bolt text-primary me-2"></i>
+                        Electricity Consumption Analysis
+                    </h5>
+                    <p class="text-muted">
+                        Professional data visualization project analyzing electricity consumption patterns across India using Tableau.
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="fw-bold mb-3">Quick Links</h5>
+                    <div class="d-flex flex-column">
+                        <a href="/dashboard" class="text-muted mb-2"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="/story" class="text-muted mb-2"><i class="fas fa-book me-2"></i>Story</a>
+                        <a href="/visualizations" class="text-muted mb-2"><i class="fas fa-chart-line me-2"></i>Visualizations</a>
+                        <a href="/documentation" class="text-muted mb-2"><i class="fas fa-file-alt me-2"></i>Documentation</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="text-muted mb-0">
+                    &copy; 2024 Electricity Consumption Analysis. Built with Tableau, Flask, and Python.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

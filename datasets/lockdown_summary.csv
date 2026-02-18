@@ -1,0 +1,4 @@
+is_lockdown,year,Total_Usage,Avg_Usage,Record_Count
+False,2019,1216205.3,102.66,11847
+False,2020,308915.1,106.38,2904
+True,2020,184607.5,99.9,1848

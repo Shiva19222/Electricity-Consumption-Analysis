@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Consumption Story</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--primary-color);
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-section {
+            padding: 60px 0 40px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .story-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px auto;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            max-width: 1400px;
+        }
+
+        .tableau-embed {
+            width: 100%;
+            height: 800px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .story-scenes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .scene-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .scene-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .scene-number {
+            background: var(--secondary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-weight: bold;
+        }
+
+        .scene-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .scene-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .btn-tableau {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .btn-tableau:hover {
+            background: linear-gradient(135deg, #2980b9, #21618c);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-bolt text-primary me-2"></i>
+                Electricity Analysis
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/visualizations"><i class="fas fa-chart-line me-1"></i>Visualizations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/story"><i class="fas fa-book me-1"></i>Story</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analysis"><i class="fas fa-analytics me-1"></i>Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/documentation"><i class="fas fa-file-alt me-1"></i>Documentation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">
+                <i class="fas fa-book me-3"></i>
+                Data Story
+            </h1>
+            <p class="hero-subtitle">
+                A 5-scene narrative journey through electricity consumption patterns across India
+            </p>
+        </div>
+    </section>
+
+    <!-- Story Container -->
+    <div class="container">
+        <div class="story-container">
+            <!-- Alert -->
+            <div class="alert alert-info" role="alert">
+                <h5 class="alert-heading">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Interactive Data Story
+                </h5>
+                <p class="mb-0">
+                    This story presents electricity consumption analysis through 5 carefully crafted scenes, 
+                    each focusing on different aspects of consumption patterns, time analysis, regional variations, 
+                    COVID-19 impact, and key insights.
+                </p>
+            </div>
+
+            <!-- Story Scenes Overview -->
+            <div class="story-scenes">
+                <div class="scene-card">
+                    <div class="scene-number">1</div>
+                    <h3 class="scene-title">Overview</h3>
+                    <p class="scene-description">
+                        Introduction to electricity consumption in India from 2019-2020, setting the context for the analysis with key statistics and total consumption figures.
+                    </p>
+                </div>
+
+                <div class="scene-card">
+                    <div class="scene-number">2</div>
+                    <h3 class="scene-title">Time Patterns</h3>
+                    <p class="scene-description">
+                        Deep dive into consumption patterns over time, including monthly trends, seasonal variations, and quarterly analysis revealing cyclical patterns.
+                    </p>
+                </div>
+
+                <div class="scene-card">
+                    <div class="scene-number">3</div>
+                    <h3 class="scene-title">Regional Analysis</h3>
+                    <p class="scene-description">
+                        Geographic exploration of consumption patterns across different regions, states, and metropolitan areas with comparative analysis.
+                    </p>
+                </div>
+
+                <div class="scene-card">
+                    <div class="scene-number">4</div>
+                    <h3 class="scene-title">COVID-19 Impact</h3>
+                    <p class="scene-description">
+                        Analysis of how COVID-19 lockdowns affected electricity consumption patterns, comparing pre-lockdown and post-lockdown scenarios.
+                    </p>
+                </div>
+
+                <div class="scene-card">
+                    <div class="scene-number">5</div>
+                    <h3 class="scene-title">Key Insights</h3>
+                    <p class="scene-description">
+                        Summary of key findings, top consuming states, seasonal peaks, and future outlook for electricity consumption patterns and policy implications.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tableau Story Embed -->
+            <div class="text-center mb-4">
+                <h3 class="mb-3">
+                    <i class="fas fa-book-open me-2"></i>
+                    Complete Electricity Consumption Story
+                </h3>
+                
+                {% if tableau_url and tableau_url != 'PASTE_YOUR_STORY_URL_HERE' %}
+                    <!-- Embedded Tableau Story -->
+                    <iframe 
+                        src="{{ tableau_url }}?:embed=yes&:display_count=yes&:showVizHome=no" 
+                        class="tableau-embed"
+                        frameborder="0">
+                    </iframe>
+                    
+                    <div class="mt-4">
+                        <a href="{{ tableau_url }}" target="_blank" class="btn-tableau">
+                            <i class="fas fa-external-link-alt me-2"></i>
+                            Open in Tableau Public
+                        </a>
+                        <a href="/dashboard" class="btn-tableau">
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            View Dashboard
+                        </a>
+                        <a href="/visualizations" class="btn-tableau">
+                            <i class="fas fa-chart-line me-2"></i>
+                            View All Visualizations
+                        </a>
+                    </div>
+                {% else %}
+                    <!-- Placeholder for when URL is not set -->
+                    <div class="info-section">
+                        <h4>
+                            <i class="fas fa-cog me-2"></i>
+                            Story Configuration
+                        </h4>
+                        <p>
+                            The Tableau story URL needs to be configured. Please update the Flask application with your Tableau Public story URL.
+                        </p>
+                        
+                        <div class="info-section">
+                            <h6>
+                                <i class="fas fa-list me-2"></i>
+                                Story Scenes:
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-card">
+                                        <h6>Scene 1: Overview</h6>
+                                        <p class="mb-0">Introduction and total consumption summary with key statistics.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-card">
+                                        <h6>Scene 2: Time Patterns</h6>
+                                        <p class="mb-0">Monthly trends, seasonal variations, and quarterly analysis.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-card">
+                                        <h6>Scene 3: Regional Analysis</h6>
+                                        <p class="mb-0">Geographic distribution and state-wise consumption patterns.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-card">
+                                        <h6>Scene 4: COVID-19 Impact</h6>
+                                        <p class="mb-0">Lockdown effects and consumption pattern changes.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-card">
+                                        <h6>Scene 5: Key Insights</h6>
+                                        <p class="mb-0">Summary findings and future outlook recommendations.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <a href="/dashboard" class="btn-tableau">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                View Dashboard
+                            </a>
+                            <a href="/visualizations" class="btn-tableau">
+                                <i class="fas fa-chart-line me-2"></i>
+                                View Visualizations
+                            </a>
+                            <a href="/" class="btn-tableau">
+                                <i class="fas fa-home me-2"></i>
+                                Back to Home
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="info-section">
+            <h4>
+                <i class="fas fa-lightbulb me-2"></i>
+                Story Insights
+            </h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="info-card">
+                        <h6>
+                            <i class="fas fa-chart-line me-2"></i>
+                            Consumption Patterns
+                        </h6>
+                        <p class="mb-0">
+                            The story reveals clear seasonal patterns with summer peaks, regional variations showing North-South divides, 
+                            and significant COVID-19 impact during lockdown periods.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-card">
+                        <h6>
+                            <i class="fas fa-map-marked-alt me-2"></i>
+                            Geographic Insights
+                        </h6>
+                        <p class="mb-0">
+                            Metropolitan areas show higher consumption patterns, while regional analysis highlights 
+                            infrastructure and economic development correlations with electricity usage.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-card">
+                        <h6>
+                            <i class="fas fa-virus me-2"></i>
+                            Pandemic Impact
+                        </h6>
+                        <p class="mb-0">
+                            COVID-19 lockdowns caused significant consumption drops, particularly in commercial and industrial sectors, 
+                            while residential consumption saw increases during work-from-home periods.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-card">
+                        <h6>
+                            <i class="fas fa-chart-pie me-2"></i>
+                            Sector Analysis
+                        </h6>
+                        <p class="mb-0">
+                            Different sectors show varying consumption patterns with industrial areas having the highest demand, 
+                            followed by commercial and residential sectors with distinct daily and seasonal patterns.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-bolt text-primary me-2"></i>
+                        Electricity Consumption Analysis
+                    </h5>
+                    <p class="text-muted">
+                        Professional data visualization project analyzing electricity consumption patterns across India using Tableau.
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="fw-bold mb-3">Quick Links</h5>
+                    <div class="d-flex flex-column">
+                        <a href="/dashboard" class="text-muted mb-2"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="/visualizations" class="text-muted mb-2"><i class="fas fa-chart-line me-2"></i>Visualizations</a>
+                        <a href="/analysis" class="text-muted mb-2"><i class="fas fa-analytics me-2"></i>Analysis</a>
+                        <a href="/documentation" class="text-muted mb-2"><i class="fas fa-file-alt me-2"></i>Documentation</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="text-muted mb-0">
+                    &copy; 2024 Electricity Consumption Analysis. Built with Tableau, Flask, and Python.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

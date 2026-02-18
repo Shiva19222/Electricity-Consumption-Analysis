@@ -1,0 +1,65 @@
+# Simple Tableau Instructions
+
+## Files Created:
+1. Tableau_Ready_Data.csv - Enhanced main dataset
+2. Quick_Summary.csv - Quick summary by year and region
+
+## Tableau Steps:
+1. Open Tableau Desktop
+2. Click "Connect" -> "To a File" -> "Text File"
+3. Select "Tableau_Ready_Data.csv"
+4. Create visualizations:
+
+### Required Visualizations (12):
+1. 2019 State Consumption: Filter year=2019, bar chart by States
+2. 2020 State Consumption: Filter year=2020, bar chart by States
+3. Total Consumption: SUM(Usage) summary
+4. Usage by Region: Pie chart by Regions
+5. Top N States: Ranking by SUM(Usage)
+6. Month-wise: Line chart by month_name
+7. Regional Analysis: Map by Regions
+8. Lockdown Impact: Compare is_lockdown=True/False
+9. Region-wise States: Filled map by States
+10. Quarter Usage: Bar chart by quarter_name
+11. Metro Analysis: Filter is_metro=True
+12. Year Comparison: Side-by-side bars by year
+
+## Next Steps:
+1. Connect Tableau to CSV files
+2. Create 12 visualizations
+3. Build dashboard
+4. Create story
+5. Publish to Tableau Public
+6. Update Flask app URLs
+
+## Available Fields in Tableau_Ready_Data.csv:
+- States, Regions, latitude, longitude, Dates, Usage
+- year, month, month_name, quarter, quarter_name
+- season, is_lockdown, lockdown_phase, is_metro
+
+## Data Summary:
+- Total Records: 16,599
+- Date Range: 2019-01-02 to 2020-12-05
+- States: Multiple Indian states
+- Regions: North, South, East, West, Central, Northeast
+- Enhanced Fields: Seasonal analysis, COVID lockdown, metro classification
+
+## Tableau Tips:
+1. Use "Dates" as a date field for time series analysis
+2. Use "is_lockdown" filter for COVID impact analysis
+3. Use "season" for seasonal consumption patterns
+4. Use "is_metro" for urban vs rural analysis
+5. Create calculated fields for additional insights if needed
+
+## Dashboard Design:
+- Title: "Electricity Consumption Analysis 2019-2020"
+- Filters: Year, Region, State, Season, Lockdown Status
+- Layout: 2x3 grid for visualizations
+- Size: Automatic (responsive)
+
+## Story Scenes (5):
+1. Overview: Introduction and key statistics
+2. Time Analysis: Monthly and quarterly trends
+3. Regional Analysis: Geographic patterns
+4. COVID Impact: Lockdown effects
+5. Conclusions: Key insights and recommendations
