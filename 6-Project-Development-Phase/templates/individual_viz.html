@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Electricity Consumption Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--primary-color);
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-section {
+            padding: 60px 0 40px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .viz-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px auto;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            max-width: 1400px;
+        }
+
+        .tableau-embed {
+            width: 100%;
+            height: 800px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .btn-tableau {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .btn-tableau:hover {
+            background: linear-gradient(135deg, #2980b9, #21618c);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .viz-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .viz-badge {
+            background: var(--secondary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 5px;
+        }
+
+        .viz-type {
+            background: var(--success-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 5px;
+        }
+
+        .breadcrumb {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }
+
+        .breadcrumb-item a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+
+        .breadcrumb-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-bolt text-primary me-2"></i>
+                Electricity Analysis
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/visualizations"><i class="fas fa-chart-line me-1"></i>Visualizations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/story"><i class="fas fa-book me-1"></i>Story</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analysis"><i class="fas fa-analytics me-1"></i>Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/documentation"><i class="fas fa-file-alt me-1"></i>Documentation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/"><i class="fas fa-home me-1"></i>Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/visualizations"><i class="fas fa-chart-line me-1"></i>Visualizations</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">
+                <i class="fas fa-chart-bar me-3"></i>
+                {{ title }}
+            </h1>
+            <p class="hero-subtitle">
+                {{ description }}
+            </p>
+            <div class="viz-meta">
+                <span class="viz-badge">{{ activity }}</span>
+                <span class="viz-type">{{ viz_type }}</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visualization Container -->
+    <div class="container">
+        <div class="viz-container">
+            <!-- Alert -->
+            <div class="alert alert-info" role="alert">
+                <h5 class="alert-heading">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Interactive {{ viz_type }}
+                </h5>
+                <p class="mb-0">
+                    This is an interactive {{ viz_type.lower() }} showing {{ description.lower() }}. 
+                    You can interact with the visualization by hovering over elements, applying filters, 
+                    and exploring the data in detail.
+                </p>
+            </div>
+
+            <!-- Tableau Visualization Embed -->
+            <div class="text-center mb-4">
+                <h3 class="mb-3">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    {{ title }}
+                </h3>
+                
+                {% if tableau_url and tableau_url != 'PASTE_YOUR_' + title.split()[0].upper() + '_URL_HERE' %}
+                    <!-- Embedded Tableau Visualization -->
+                    <iframe 
+                        src="{{ tableau_url }}?:embed=yes&:display_count=yes&:showVizHome=no" 
+                        class="tableau-embed"
+                        frameborder="0">
+                    </iframe>
+                    
+                    <div class="mt-4">
+                        <a href="{{ tableau_url }}" target="_blank" class="btn-tableau">
+                            <i class="fas fa-external-link-alt me-2"></i>
+                            Open in Tableau Public
+                        </a>
+                        <a href="/visualizations" class="btn-tableau">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Back to Visualizations
+                        </a>
+                        <a href="/dashboard" class="btn-tableau">
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            View Dashboard
+                        </a>
+                    </div>
+                {% else %}
+                    <!-- Placeholder for when URL is not set -->
+                    <div class="info-section">
+                        <h4>
+                            <i class="fas fa-cog me-2"></i>
+                            Visualization Configuration
+                        </h4>
+                        <p>
+                            The Tableau visualization URL needs to be configured. Please update the Flask application with your Tableau Public URL for this specific visualization.
+                        </p>
+                        
+                        <div class="info-card">
+                            <h6>
+                                <i class="fas fa-info-circle me-2"></i>
+                                Visualization Details:
+                            </h6>
+                            <ul class="mb-0">
+                                <li><strong>Title:</strong> {{ title }}</li>
+                                <li><strong>Type:</strong> {{ viz_type }}</li>
+                                <li><strong>Activity:</strong> {{ activity }}</li>
+                                <li><strong>Description:</strong> {{ description }}</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h6>
+                                <i class="fas fa-lightbulb me-2"></i>
+                                What This Visualization Shows:
+                            </h6>
+                            {% if '2019' in title %}
+                                <p class="mb-0">
+                                    This visualization displays electricity consumption data for all Indian states during the year 2019, 
+                                    allowing for state-by-state comparison and identification of consumption patterns.
+                                </p>
+                            {% elif '2020' in title %}
+                                <p class="mb-0">
+                                    This visualization displays electricity consumption data for all Indian states during the year 2020, 
+                                    showing how consumption patterns changed compared to 2019 and the impact of COVID-19.
+                                </p>
+                            {% elif 'Total' in title %}
+                                <p class="mb-0">
+                                    This visualization provides a comprehensive summary of total electricity consumption across all states 
+                                    and regions, with key statistics and aggregate metrics.
+                                </p>
+                            {% elif 'Region' in title %}
+                                <p class="mb-0">
+                                    This visualization breaks down electricity consumption by geographical regions (North, South, East, West, Central), 
+                                    showing regional distribution and consumption patterns.
+                                </p>
+                            {% elif 'Top' in title %}
+                                <p class="mb-0">
+                                    This visualization ranks states by electricity consumption, highlighting the top 10 highest consuming 
+                                    states and bottom 10 lowest consuming states for comparative analysis.
+                                </p>
+                            {% elif 'Month' in title %}
+                                <p class="mb-0">
+                                    This visualization shows monthly consumption trends over time, revealing seasonal patterns, 
+                                    peak consumption periods, and year-over-year comparisons.
+                                </p>
+                            {% elif 'Heat' in title %}
+                                <p class="mb-0">
+                                    This visualization uses a heat map to show consumption intensity across different regions 
+                                    and time periods, making it easy to identify consumption hotspots.
+                                </p>
+                            {% elif 'Lockdown' in title %}
+                                <p class="mb-0">
+                                    This visualization compares electricity consumption before and after COVID-19 lockdowns, 
+                                    showing the impact of lockdown measures on energy usage patterns.
+                                </p>
+                            {% elif 'Map' in title %}
+                                <p class="mb-0">
+                                    This visualization displays electricity consumption data on a geographic map of India, 
+                                    showing state-level consumption patterns with color-coded intensity.
+                                </p>
+                            {% elif 'Quarter' in title %}
+                                <p class="mb-0">
+                                    This visualization breaks down consumption by quarters (Q1, Q2, Q3, Q4), 
+                                    showing seasonal patterns and quarterly variations in electricity usage.
+                                </p>
+                            {% elif 'Metro' in title %}
+                                <p class="mb-0">
+                                    This visualization focuses on metropolitan cities, comparing consumption patterns 
+                                    between metro and non-metro areas and identifying urban consumption trends.
+                                </p>
+                            {% elif 'Year' in title %}
+                                <p class="mb-0">
+                                    This visualization provides a year-over-year comparison of electricity consumption, 
+                                    showing trends and changes between 2019 and 2020.
+                                </p>
+                            {% else %}
+                                <p class="mb-0">
+                                    This visualization provides detailed insights into electricity consumption patterns, 
+                                    supporting data-driven decision making and policy development.
+                                </p>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="text-center">
+                            <a href="/visualizations" class="btn-tableau">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Back to Visualizations
+                            </a>
+                            <a href="/dashboard" class="btn-tableau">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                View Dashboard
+                            </a>
+                            <a href="/" class="btn-tableau">
+                                <i class="fas fa-home me-2"></i>
+                                Back to Home
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Related Visualizations -->
+        <div class="info-section">
+            <h4>
+                <i class="fas fa-chart-line me-2"></i>
+                Related Visualizations
+            </h4>
+            <p>
+                Explore other visualizations in this project to get a comprehensive understanding of electricity consumption patterns.
+            </p>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="info-card">
+                        <h6>
+                            <i class="fas fa-chart-bar me-2"></i>
+                            Activity 1.1 Visualizations
+                        </h6>
+                        <p class="mb-0">
+                            Basic consumption analysis including state-wise consumption, regional breakdown, and total consumption summaries.
+                        </p>
+                        <a href="/visualizations" class="btn-tableau btn-sm mt-2">
+                            View Activity 1.1
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-card">
+                        <h6>
+                            <i class="fas fa-chart-line me-2"></i>
+                            Activity 1.2 Visualizations
+                        </h6>
+                        <p class="mb-0">
+                            Time-based analysis including monthly trends, regional heatmaps, and COVID-19 lockdown impact.
+                        </p>
+                        <a href="/visualizations" class="btn-tableau btn-sm mt-2">
+                            View Activity 1.2
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-card">
+                        <h6>
+                            <i class="fas fa-map me-2"></i>
+                            Activity 1.3 Visualizations
+                        </h6>
+                        <p class="mb-0">
+                            Geographic and temporal analysis including state maps, quarterly usage, and metro city analysis.
+                        </p>
+                        <a href="/visualizations" class="btn-tableau btn-sm mt-2">
+                            View Activity 1.3
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-card">
+                        <h6>
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            Interactive Dashboard
+                        </h6>
+                        <p class="mb-0">
+                            Complete dashboard with all visualizations and interactive filters for comprehensive analysis.
+                        </p>
+                        <a href="/dashboard" class="btn-tableau btn-sm mt-2">
+                            View Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-bolt text-primary me-2"></i>
+                        Electricity Consumption Analysis
+                    </h5>
+                    <p class="text-muted">
+                        Professional data visualization project analyzing electricity consumption patterns across India using Tableau.
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="fw-bold mb-3">Quick Links</h5>
+                    <div class="d-flex flex-column">
+                        <a href="/visualizations" class="text-muted mb-2"><i class="fas fa-chart-line me-2"></i>Visualizations</a>
+                        <a href="/dashboard" class="text-muted mb-2"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="/story" class="text-muted mb-2"><i class="fas fa-book me-2"></i>Story</a>
+                        <a href="/analysis" class="text-muted mb-2"><i class="fas fa-analytics me-2"></i>Analysis</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="text-muted mb-0">
+                    &copy; 2024 Electricity Consumption Analysis. Built with Tableau, Flask, and Python.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Consumption Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--primary-color);
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-section {
+            padding: 60px 0 40px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .dashboard-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px auto;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            max-width: 1400px;
+        }
+
+        .tableau-embed {
+            width: 100%;
+            height: 800px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .btn-tableau {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .btn-tableau:hover {
+            background: linear-gradient(135deg, #2980b9, #21618c);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-bolt text-primary me-2"></i>
+                Electricity Analysis
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/visualizations"><i class="fas fa-chart-line me-1"></i>Visualizations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/story"><i class="fas fa-book me-1"></i>Story</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analysis"><i class="fas fa-analytics me-1"></i>Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/documentation"><i class="fas fa-file-alt me-1"></i>Documentation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">
+                <i class="fas fa-tachometer-alt me-3"></i>
+                Interactive Dashboard
+            </h1>
+            <p class="hero-subtitle">
+                Professional Tableau dashboard with all 12 visualizations and interactive filters
+            </p>
+        </div>
+    </section>
+
+    <!-- Dashboard Container -->
+    <div class="container">
+        <div class="dashboard-container">
+            <!-- Project Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Visualizations</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">16,599</div>
+                    <div class="stat-label">Data Records</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">35</div>
+                    <div class="stat-label">Indian States</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Regions</div>
+                </div>
+            </div>
+
+            <!-- Alert -->
+            <div class="alert alert-info" role="alert">
+                <h5 class="alert-heading">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Interactive Tableau Dashboard
+                </h5>
+                <p class="mb-0">
+                    This dashboard contains all 12 professional visualizations with interactive filters for year, region, and lockdown status. 
+                    You can interact with all charts, apply filters, and explore the data in detail.
+                </p>
+            </div>
+
+            <!-- Tableau Dashboard Embed -->
+            <div class="text-center mb-4">
+                <h3 class="mb-3">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    Complete Electricity Consumption Analysis Dashboard
+                </h3>
+                
+                {% if tableau_url and tableau_url != 'PASTE_YOUR_DASHBOARD_URL_HERE' %}
+                    <!-- Embedded Tableau Dashboard -->
+                    <iframe 
+                        src="{{ tableau_url }}?:embed=yes&:display_count=yes&:showVizHome=no" 
+                        class="tableau-embed"
+                        frameborder="0">
+                    </iframe>
+                    
+                    <div class="mt-4">
+                        <a href="{{ tableau_url }}" target="_blank" class="btn-tableau">
+                            <i class="fas fa-external-link-alt me-2"></i>
+                            Open in Tableau Public
+                        </a>
+                        <a href="/visualizations" class="btn-tableau">
+                            <i class="fas fa-chart-line me-2"></i>
+                            View All Visualizations
+                        </a>
+                        <a href="/story" class="btn-tableau">
+                            <i class="fas fa-book me-2"></i>
+                            View Story
+                        </a>
+                    </div>
+                {% else %}
+                    <!-- Placeholder for when URL is not set -->
+                    <div class="info-section">
+                        <h4>
+                            <i class="fas fa-cog me-2"></i>
+                            Dashboard Configuration
+                        </h4>
+                        <p>
+                            The Tableau dashboard URL needs to be configured. Please update the Flask application with your Tableau Public dashboard URL.
+                        </p>
+                        
+                        <div class="info-card">
+                            <h6>
+                                <i class="fas fa-list me-2"></i>
+                                Dashboard Contains:
+                            </h6>
+                            <ul class="mb-0">
+                                <li>2019 State Consumption Analysis</li>
+                                <li>2020 State Consumption Analysis</li>
+                                <li>Total Consumption Summary</li>
+                                <li>Usage by Regional Breakdown</li>
+                                <li>Top 10 States Ranking</li>
+                                <li>Monthly Consumption Trends</li>
+                                <li>Regional Heat Map Analysis</li>
+                                <li>COVID-19 Lockdown Impact</li>
+                                <li>Geographic State Distribution</li>
+                                <li>Quarterly Consumption Patterns</li>
+                                <li>Metro City Analysis</li>
+                                <li>Year-over-Year Comparison</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="text-center">
+                            <a href="/visualizations" class="btn-tableau">
+                                <i class="fas fa-chart-line me-2"></i>
+                                View Individual Visualizations
+                            </a>
+                            <a href="/" class="btn-tableau">
+                                <i class="fas fa-home me-2"></i>
+                                Back to Home
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="info-section">
+            <h4>
+                <i class="fas fa-info-circle me-2"></i>
+                Dashboard Features
+            </h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="info-card">
+                        <h6>
+                            <i class="fas fa-filter me-2"></i>
+                            Interactive Filters
+                        </h6>
+                        <p class="mb-0">
+                            Filter data by year (2019-2020), region (North, South, East, West, Central), and lockdown status to explore specific scenarios.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-card">
+                        <h6>
+                            <i class="fas fa-chart-line me-2"></i>
+                            Real-time Updates
+                        </h6>
+                        <p class="mb-0">
+                            All visualizations update dynamically when filters are applied, providing instant insights into electricity consumption patterns.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-card">
+                        <h6>
+                            <i class="fas fa-expand me-2"></i>
+                            Responsive Design
+                        </h6>
+                        <p class="mb-0">
+                            The dashboard is fully responsive and works seamlessly on desktop, tablet, and mobile devices for optimal viewing experience.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-card">
+                        <h6>
+                            <i class="fas fa-download me-2"></i>
+                            Export Options
+                        </h6>
+                        <p class="mb-0">
+                            Export visualizations as images, PDFs, or data for reports and presentations. Download insights for further analysis.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-bolt text-primary me-2"></i>
+                        Electricity Consumption Analysis
+                    </h5>
+                    <p class="text-muted">
+                        Professional data visualization project analyzing electricity consumption patterns across India using Tableau.
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="fw-bold mb-3">Quick Links</h5>
+                    <div class="d-flex flex-column">
+                        <a href="/visualizations" class="text-muted mb-2"><i class="fas fa-chart-line me-2"></i>Visualizations</a>
+                        <a href="/story" class="text-muted mb-2"><i class="fas fa-book me-2"></i>Story</a>
+                        <a href="/analysis" class="text-muted mb-2"><i class="fas fa-analytics me-2"></i>Analysis</a>
+                        <a href="/documentation" class="text-muted mb-2"><i class="fas fa-file-alt me-2"></i>Documentation</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="text-muted mb-0">
+                    &copy; 2024 Electricity Consumption Analysis. Built with Tableau, Flask, and Python.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

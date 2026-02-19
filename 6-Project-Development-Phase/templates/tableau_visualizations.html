@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Consumption Visualizations</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--primary-color);
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-section {
+            padding: 80px 0 60px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .visualization-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 60px 0;
+        }
+
+        .viz-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+
+        .viz-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .viz-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        .viz-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .viz-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .viz-activity {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .btn-tableau {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-tableau:hover {
+            background: linear-gradient(135deg, #2980b9, #21618c);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-bolt text-primary me-2"></i>
+                Electricity Analysis
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/visualizations"><i class="fas fa-chart-line me-1"></i>Visualizations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/story"><i class="fas fa-book me-1"></i>Story</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analysis"><i class="fas fa-analytics me-1"></i>Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/documentation"><i class="fas fa-file-alt me-1"></i>Documentation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">
+                <i class="fas fa-chart-line me-3"></i>
+                Professional Visualizations
+            </h1>
+            <p class="hero-subtitle">
+                Explore 12 interactive visualizations analyzing electricity consumption patterns across India
+            </p>
+        </div>
+    </section>
+
+    <!-- Visualizations Grid -->
+    <section class="visualization-grid">
+        <div class="container">
+            <div class="row">
+                <!-- Activity 1.1 Visualizations -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="viz-card">
+                        <div class="viz-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="viz-activity">Activity 1.1</div>
+                        <h3 class="viz-title">2019 State Consumption</h3>
+                        <p class="viz-description">
+                            Bar chart showing electricity consumption by Indian states for the year 2019
+                        </p>
+                        <a href="/visualization/2019-states" class="btn-tableau">
+                            <i class="fas fa-eye me-2"></i>View Visualization
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="viz-card">
+                        <div class="viz-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="viz-activity">Activity 1.1</div>
+                        <h3 class="viz-title">2020 State Consumption</h3>
+                        <p class="viz-description">
+                            Bar chart showing electricity consumption by Indian states for the year 2020
+                        </p>
+                        <a href="/visualization/2019-states" class="btn-tableau">
+                            <i class="fas fa-eye me-2"></i>View Visualization
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="viz-card">
+                        <div class="viz-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="viz-activity">Activity 1.1</div>
+                        <h3 class="viz-title">Total Consumption</h3>
+                        <p class="viz-description">
+                            Summary card showing overall electricity consumption statistics and totals
+                        </p>
+                        <a href="/visualization/2019-states" class="btn-tableau">
+                            <i class="fas fa-eye me-2"></i>View Visualization
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="viz-card">
+                        <div class="viz-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="viz-activity">Activity 1.1</div>
+                        <h3 class="viz-title">Usage by Region</h3>
+                        <p class="viz-description">
+                            Pie chart showing regional breakdown of electricity consumption across India
+                        </p>
+                        <a href="/visualization/2019-states" class="btn-tableau">
+                            <i class="fas fa-eye me-2"></i>View Visualization
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="viz-card">
+                        <div class="viz-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="viz-activity">Activity 1.1</div>
+                        <h3 class="viz-title">Top N and Bottom N States</h3>
+                        <p class="viz-description">
+                            Ranking chart showing highest and lowest electricity consuming states
+                        </p>
+                        <a href="/visualization/2019-states" class="btn-tableau">
+                            <i class="fas fa-eye me-2"></i>View Visualization
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Activity 1.2 Visualizations -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="viz-card">
+                        <div class="viz-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="viz-activity">Activity 1.2</div>
+                        <h3 class="viz-title">2019 and 2020 Month-wise Consumption</h3>
+                        <p class="viz-description">
+                            Line chart showing monthly consumption trends for both years with seasonal patterns
+                        </p>
+                        <a href="/visualization/2019-states" class="btn-tableau">
+                            <i class="fas fa-eye me-2"></i>View Visualization
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="viz-card">
+                        <div class="viz-icon">
+                            <i class="fas fa-th"></i>
+                        </div>
+                        <div class="viz-activity">Activity 1.2</div>
+                        <h3 class="viz-title">Total Consumption Region Wise</h3>
+                        <p class="viz-description">
+                            Heat map showing total consumption by regions with year-over-year comparison
+                        </p>
+                        <a href="/visualization/2019-states" class="btn-tableau">
+                            <i class="fas fa-eye me-2"></i>View Visualization
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="viz-card">
+                        <div class="viz-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="viz-activity">Activity 1.2</div>
+                        <h3 class="viz-title">Usage Before and After Lockdown</h3>
+                        <p class="viz-description">
+                            Bar chart comparing electricity consumption before and after COVID-19 lockdowns
+                        </p>
+                        <a href="/visualization/2019-states" class="btn-tableau">
+                            <i class="fas fa-eye me-2"></i>View Visualization
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Activity 1.3 Visualizations -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="viz-card">
+                        <div class="viz-icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <div class="viz-activity">Activity 1.3</div>
+                        <h3 class="viz-title">Region wise State Usage</h3>
+                        <p class="viz-description">
+                            Filled map showing electricity consumption by states with regional color coding
+                        </p>
+                        <a href="/visualization/2019-states" class="btn-tableau">
+                            <i class="fas fa-eye me-2"></i>View Visualization
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="viz-card">
+                        <div class="viz-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="viz-activity">Activity 1.3</div>
+                        <h3 class="viz-title">Quarter Usage</h3>
+                        <p class="viz-description">
+                            Bar chart showing electricity consumption patterns by quarters across the year
+                        </p>
+                        <a href="/visualization/2019-states" class="btn-tableau">
+                            <i class="fas fa-eye me-2"></i>View Visualization
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="viz-card">
+                        <div class="viz-icon">
+                            <i class="fas fa-city"></i>
+                        </div>
+                        <div class="viz-activity">Activity 1.3</div>
+                        <h3 class="viz-title">Metro City State Usage</h3>
+                        <p class="viz-description">
+                            Scatter plot showing electricity consumption patterns in metropolitan cities
+                        </p>
+                        <a href="/visualization/2019-states" class="btn-tableau">
+                            <i class="fas fa-eye me-2"></i>View Visualization
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="viz-card">
+                        <div class="viz-icon">
+                            <i class="fas fa-chart-column"></i>
+                        </div>
+                        <div class="viz-activity">Activity 1.3</div>
+                        <h3 class="viz-title">Usage by Year</h3>
+                        <p class="viz-description">
+                            Bar chart showing year-over-year electricity consumption comparison
+                        </p>
+                        <a href="/visualization/2019-states" class="btn-tableau">
+                            <i class="fas fa-eye me-2"></i>View Visualization
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-bolt text-primary me-2"></i>
+                        Electricity Consumption Analysis
+                    </h5>
+                    <p class="text-muted">
+                        Professional data visualization project analyzing electricity consumption patterns across India using Tableau.
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="fw-bold mb-3">Quick Links</h5>
+                    <div class="d-flex flex-column">
+                        <a href="/dashboard" class="text-muted mb-2"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="/story" class="text-muted mb-2"><i class="fas fa-book me-2"></i>Story</a>
+                        <a href="/analysis" class="text-muted mb-2"><i class="fas fa-analytics me-2"></i>Analysis</a>
+                        <a href="/documentation" class="text-muted mb-2"><i class="fas fa-file-alt me-2"></i>Documentation</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="text-muted mb-0">
+                    &copy; 2024 Electricity Consumption Analysis. Built with Tableau, Flask, and Python.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
